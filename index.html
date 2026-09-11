@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>観光名所マップ</title>
+
+    <script async
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdzhxfnCScZvzqjduohh5zVZG7yko_Qcs&loading=async&callback=initMap&libraries=maps,marker">
+    </script>
+
+    <style>
+      #map {
+        height: 100%;
+      }
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      /* マーカー追加 */
+      #addMarkerButton {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 5;
+
+        padding: 10px 15px;
+
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      #addMarkerButton:hover {
+        background-color: #f0f0f0;
+      }
+
+      #message {
+        position: absolute;
+        top: 55px;
+        left: 10px;
+        z-index: 5;
+
+        background-color: white;
+        padding: 8px 12px;
+
+        border-radius: 5px;
+
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- マーカー追加ボタン -->
+    <button id="addMarkerButton" onclick="startAddMarker()">
+    マーカーを追加
+    </button>
+
+    <div id="message">
+      マーカーを追加したい場所をクリックしてください
+    </div>
+
+    <div id="map"></div>
+
+
+    <script>
+
+      // 地図
+      let map;
+      let infoWindow;
+      // マーカー追加モード
+      let addingMarker = false;
+
+      function initMap() {
+
+        // マップ
+        map = new google.maps.Map(
+          document.getElementById("map"),
+          {
+            zoom: 18,
+
+            center: {
+              lat: 35.16813518311986,
+              lng: 136.88568875773115
+            },
+
+            zoomControl: true,
+            mapTypeControl: true,
+            streetViewControl: false
+          }
+        );
+
+
+        infoWindow = new google.maps.InfoWindow();
+
+
+        // マーカー1（HALなごや）
+        const marker1 = new google.maps.Marker({
+          position: {
+            lat: 35.16813518311986,
+            lng: 136.88568875773115
+          },
+
+          map: map,
+
+          title: "HALなごやだよ"
+        });
+
+
+        marker1.addListener("click", () => {
+
+          infoWindow.setContent(`
+            <img src="https://stat.ameba.jp/user_images/20170804/14/f91suzuran/a6/00/p/o0586078913997480675.png?caw=800"
+                width="250"
+                style="margin-top:10px; border-radius:8px;">
+            <h1>HALなごや</h1>
+            <p>
+              ここはHALなごやです。
+            </p>
+          `);
+          infoWindow.open(map, marker1);
+        });
+
+
+        // マーカー2（王滝渓谷）
+        const marker2 = new google.maps.Marker({
+
+          position: {
+            lat: 35.06772721504446,
+            lng: 137.2429892419444
+          },
+          map: map,
+          title: "王滝渓谷"
+        });
+
+
+        marker2.addListener("click", () => {
+
+          infoWindow.setContent(`
+            <img src="https://aichinow.pref.aichi.jp/upload/site/spots/large/f1a7895d67ddf1f8a371be8a51db3c4a.JPG"
+                width="400"
+                style="margin-top:10px; border-radius:8px;">
+
+            <h1>王滝渓谷</h1>
+            <p>
+              清流が流れ、自然を満喫することができるスポットです。<br>
+              とくに夏はバーベキューに最適。<br>
+              秋には木々が色づき、<br>
+              様々な色に紅葉した植物を楽しむことができます。
+            </p>
+          `);
+          infoWindow.open(map, marker2);
+        });
+
+
+            // マーカー3（どんぐりの里いなぶ）
+
+        const marker3 = new google.maps.Marker({
+
+          position: {
+            lat: 35.213968643782295,
+            lng: 137.5029623506857
+          },
+          map: map,
+          title: "道の駅「どんぐりの里いなぶ」"
+        });
+        marker3.addListener("click", () => {
+          infoWindow.setContent(`
+            <img src="https://tse2.mm.bing.net/th/id/OIP.4dzI90tsw90Z9MzwfR2IFQHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
+                width="400"
+                style="margin-top:10px; border-radius:8px;">
+
+            <h1>道の駅「どんぐりの里いなぶ」</h1>
+
+            <p>
+              天然温泉「どんぐりの湯」、新鮮野菜や焼きたてパン、<br>
+              山の恵みをいただける「どんぐり横丁」で<br>
+              みなさんのお越しをお待ちしております。
+            </p>
+          `);
+          infoWindow.open(map, marker3);
+        });
+
+
+        // マーカー4（押山 雲海）
+        const marker4 = new google.maps.Marker({
+          position: {
+            lat: 35.24710560587549,
+            lng: 137.50051064214026
+          },
+          map: map,
+          title: "押山 雲海"
+        });
+
+
+        marker4.addListener("click", () => {
+
+          infoWindow.setContent(`
+            <img src="https://aichinow.pref.aichi.jp/upload/site/spots/retina/4dc87fc919451fb4e0e6baecd6c9e947.jpg"
+                width="400"
+                style="margin-top:10px; border-radius:8px;">
+            <h1>押山 雲海</h1>
+            <p>
+              標高773mのMt.押山。<br>
+              近くまで車で行くことが出来るため、<br>
+              10分ほどで気軽に登頂可能。<br>
+              条件があった日には壮大な雲海もお目見えします。
+            </p>
+          `);
+          infoWindow.open(map, marker4);
+        });
+
+
+        // マーカー5（香嵐渓）
+        const marker5 = new google.maps.Marker({
+
+          position: {
+            lat: 35.131813427735494,
+            lng: 137.31301228959708
+          },
+          map: map,
+          title: "香嵐渓"
+        });
+
+
+        marker5.addListener("click", () => {
+
+          infoWindow.setContent(`
+            <img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/meguharuo/20221116/20221116115842.jpg"
+                width="400"
+                style="margin-top:10px; border-radius:8px;">
+
+            <h1>香嵐渓</h1>
+            <p>
+              全国有数の紅葉の名所として<br>
+              約3,000本のもみじが彩りを見せます。<br>
+              足助川をはさんで、かつての宿場を思わせる<br>
+              古い町並みの散策もできます。
+            </p>
+          `);
+          infoWindow.open(map, marker5);
+        });
+
+
+
+        // localStorageからマーカー読み込み
+        loadMarkers();
+        // マップクリック
+
+        map.addListener("click", (event) => {
+
+          // マーカー追加モードではない場合
+          if (!addingMarker) {
+            infoWindow.close();
+            return;
+          }
+          // 追加モードの場合
+          addMarker(event.latLng);
+        });
+
+      }
+
+
+      // マーカー追加モード
+
+      function startAddMarker() {
+        addingMarker = true;
+        document.getElementById("message").style.display = "block";
+      }
+
+
+      // マーカーを追加
+
+      function addMarker(position) {
+
+        const name = prompt(
+          "観光地の名前を入力してください"
+        );
+
+
+        // キャンセルした場合
+        if (!name) {
+
+          addingMarker = false;
+
+          document.getElementById("message").style.display = "none";
+
+          return;
+        }
+
+
+        // 説明を入力
+        const description = prompt(
+          "観光地の説明を入力してください"
+        );
+
+
+        // 保存するデータ
+        const markerData = {
+
+          name: name,
+          description: description || "",
+          lat: position.lat(),
+          lng: position.lng()
+
+        };
+
+
+        // マーカーを表示
+        createMarker(markerData);
+
+        // localStorageに保存
+        let markers =
+          JSON.parse(
+            localStorage.getItem("touristMarkers") || "[]"
+          );
+
+        markers.push(markerData);
+
+
+        localStorage.setItem(
+          "touristMarkers",
+          JSON.stringify(markers)
+        );
+
+        addingMarker = false;
+        document.getElementById("message").style.display = "none";
+      }
+
+      // マーカーを作成
+      function createMarker(markerData) {
+
+        const marker = new google.maps.Marker({
+
+          position: {
+            lat: markerData.lat,
+            lng: markerData.lng
+          },
+          map: map,
+          title: markerData.name
+        });
+
+
+        marker.addListener("click", () => {
+
+          infoWindow.setContent(`
+
+            <h2>${markerData.name}</h2>
+            <p>
+              ${markerData.description}
+            </p>
+          `);
+          infoWindow.open(map, marker);
+        });
+      }
+
+      // localStorageから読み込む
+
+      function loadMarkers() {
+
+        const savedMarkers =
+          JSON.parse(
+            localStorage.getItem("touristMarkers") || "[]"
+          );
+
+
+        // 保存されているマーカーを表示
+        savedMarkers.forEach((markerData) => {
+
+          createMarker(markerData);
+
+        });
+
+      }
+
+
+      // Google Mapから呼び出す
+      window.initMap = initMap;
+
+    </script>
+
+  </body>
+</html>
